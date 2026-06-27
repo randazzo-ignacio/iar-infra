@@ -11,16 +11,13 @@ process needed.
 | `files/index.html` | Landing page markup |
 | `files/style.css` | Matrix/terminal aesthetic stylesheet |
 | `files/script.js` | Boot sequence, matrix rain, scroll reveal |
-| `tasks/main.yml` | Creates www-data user, web root, deploys files |
+| `tasks/main.yml` | Deploys files to web root (owned by caddy user) |
 
 ## Deployment
 
-The role is included in `playbooks/site.yml` and runs on `daftpunk` when
-`tool_static_page_enabled: true` (set in `host_vars/daftpunk.yml`).
-
-Caddy runs on every cloud host but each host's Caddyfile only defines
-the domains that host actually serves. daftpunk's Caddyfile serves
-`i.ar` from `{{ static_page_root }}` via `file_server`.
+The role runs on `daftpunk` in `playbooks/site.yml`, **before** the
+`caddy` role. The `caddy` role creates `/var/www/emacboros` and sets
+ownership to the `caddy` user. This role then fills it with content.
 
 ## Architecture
 
@@ -31,3 +28,11 @@ the domains that host actually serves. daftpunk's Caddyfile serves
 
 Caddy handles TLS automatically via Let's Encrypt. No reverse proxy
 needed — static files are served directly from disk.
+
+## Role ordering
+
+```
+site.yml:
+  1. static-page (copies HTML/CSS/JS to /var/www/emacboros/)
+  2. caddy       (creates web root, deploys Caddyfile, starts Caddy)
+```

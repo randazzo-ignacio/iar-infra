@@ -1,8 +1,8 @@
 ---
 # roles/caddy/tasks/main.yml
-# Installs Caddy as a reverse proxy on the proxy server (randazzo-ar).
-# Caddy handles TLS automatically (Let's Encrypt) and proxies
-# to internal services over WireGuard.
+# Installs Caddy on cloud hosts. Each host gets a per-host Caddyfile
+# generated from Caddyfile.j2 (only the domains that host serves).
+# Caddy handles TLS automatically via Let's Encrypt.
 # All servers run Fedora Server 44 or AlmaLinux 10 (RHEL family).
 
 # ── Install Caddy ──────────────────────────────────────────
@@ -15,6 +15,27 @@
   dnf:
     name: caddy
     state: present
+
+# ── Create web root for static sites (if this host serves any) ──
+# Caddy on Fedora runs as the 'caddy' user. Static files must be
+# readable by caddy. Each host that serves static content gets a
+# web root created here. The static-page role fills it with content.
+- name: Create web root directory
+  file:
+    path: "{{ static_page_root | default('/var/www/emacboros') }}"
+    state: directory
+    owner: caddy
+    group: caddy
+    mode: '0755'
+
+- name: Create portfolio web root (rammstein only)
+  file:
+    path: /var/www/randazzo.ar
+    state: directory
+    owner: caddy
+    group: caddy
+    mode: '0755'
+  when: inventory_hostname == 'rammstein'
 
 # ── Configure Caddy ───────────────────────────────────────
 - name: Deploy Caddyfile

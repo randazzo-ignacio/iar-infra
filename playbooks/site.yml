@@ -12,7 +12,7 @@
   roles:
     - wireguard
 
-- name: Cloud servers — Caddy (per-host site config)
+- name: Cloud servers — Caddy install + site config
   hosts: cloud
   roles:
     - caddy
@@ -33,9 +33,8 @@
     - role: ollama
       when: ollama_enabled | default(false) | bool
 
-- name: Static landing page (i.ar)
+- name: i.ar — deploy static page content (after Caddy created web root)
   hosts: daftpunk
   roles:
     - role: static-page
       when: tool_static_page_enabled | default(false) | bool
-    - caddy

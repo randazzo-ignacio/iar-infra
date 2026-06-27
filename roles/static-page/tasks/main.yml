@@ -4,50 +4,30 @@
 # Caddy on daftpunk serves the files directly via file_server.
 # No separate HTTP server process needed — Caddy handles it.
 
-# ── Create www-data user ────────────────────────────────────
-- name: Create www-data user
-  user:
-    name: "{{ static_page_user }}"
-    system: true
-    create_home: false
-    shell: /sbin/nologin
-
-- name: Create www-data group (if it doesn't exist)
-  group:
-    name: "{{ static_page_group }}"
-    system: true
-    state: present
-
-# ── Create web root ──────────────────────────────────────────
-- name: Create web root directory
-  file:
-    path: "{{ static_page_root }}"
-    state: directory
-    owner: "{{ static_page_user }}"
-    group: "{{ static_page_group }}"
-    mode: '0755'
-
 # ── Deploy static files ──────────────────────────────────────
+# Caddy runs as the 'caddy' user on Fedora — use that for file ownership.
+# The caddy role creates the web root; this role fills it with content.
+
 - name: Deploy index.html
   copy:
     src: index.html
     dest: "{{ static_page_root }}/index.html"
-    owner: "{{ static_page_user }}"
-    group: "{{ static_page_group }}"
+    owner: caddy
+    group: caddy
     mode: '0644'
 
 - name: Deploy style.css
   copy:
     src: style.css
     dest: "{{ static_page_root }}/style.css"
-    owner: "{{ static_page_user }}"
-    group: "{{ static_page_group }}"
+    owner: caddy
+    group: caddy
     mode: '0644'
 
 - name: Deploy script.js
   copy:
     src: script.js
-    dest: "{{ static_page_root }}/script.js"
-    owner: "{{ static_page_user }}"
-    group: "{{ static_page_group }}"
+    dest: "{{ static_page_root }}/script.js
+    owner: caddy
+    group: caddy
     mode: '0644'

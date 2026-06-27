@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════
-   emacboros — static landing page
+   i.ar — Inteligencia Avanzada Randazzo
+   Static landing page
    Aesthetic: dark terminal / matrix vibes
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -153,6 +154,16 @@ body {
     text-shadow: 0 0 8px var(--green-glow);
 }
 
+.nav-source {
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 2px;
+}
+
+.nav-source:hover {
+    border-color: var(--border-bright);
+}
+
 /* ── Layout ────────────────────────────────────────────────── */
 .container {
     max-width: var(--max-width);
@@ -223,11 +234,12 @@ section {
 }
 
 .typewriter {
-    font-size: 18px;
+    font-size: 17px;
     color: var(--text);
-    min-height: 28px;
+    min-height: 84px;
     margin-bottom: 32px;
     letter-spacing: 0.5px;
+    white-space: pre-line;
 }
 
 .typewriter::after {

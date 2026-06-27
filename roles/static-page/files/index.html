@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>emacboros — self-modifying AI operating environment</title>
+    <title>i.ar — Inteligencia Avanzada Randazzo</title>
     <meta name="description" content="A containerized, agentic Emacs workspace powered by local LLMs. No cloud. No telemetry. No backdoors.">
-    <meta name="author" content="nacho">
-    <meta property="og:title" content="emacboros">
+    <meta name="author" content="Ignacio Agustin Randazzo">
+    <meta property="og:title" content="i.ar — Inteligencia Avanzada Randazzo">
     <meta property="og:description" content="A self-modifying AI operating environment. Built in Emacs. Hardened in Podman. Powered by local LLMs.">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300ff41'>∞</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300ff41'>i.ar</text></svg>">
 </head>
 <body>
     <!-- Matrix rain background -->
@@ -29,13 +29,14 @@
 
     <!-- Navigation -->
     <nav id="nav">
-        <a href="#hero" class="nav-brand">emacboros<span class="cursor-blink">_</span></a>
+        <a href="#hero" class="nav-brand">i.ar<span class="cursor-blink">_</span></a>
         <div class="nav-links">
             <a href="#about">about</a>
             <a href="#architecture">architecture</a>
             <a href="#features">features</a>
             <a href="#philosophy">philosophy</a>
             <a href="#stack">stack</a>
+            <a href="https://github.com/randazzo-ignacio/i.ar" target="_blank" rel="noopener" class="nav-source">source</a>
         </div>
     </nav>
 
@@ -44,9 +45,9 @@
         <div class="hero-content">
             <div class="hero-prompt">
                 <span class="prompt-symbol">$</span>
-                <span class="prompt-text">init emacboros --verbose</span>
+                <span class="prompt-text">init i.ar --verbose</span>
             </div>
-            <h1 class="glitch" data-text="emacboros">emacboros</h1>
+            <h1 class="glitch" data-text="i.ar">i.ar</h1>
             <p class="typewriter" id="typewriter"></p>
             <div class="hero-badges">
                 <span class="badge">GPL-3.0</span>
@@ -71,17 +72,18 @@
                     <span class="dot red"></span>
                     <span class="dot yellow"></span>
                     <span class="dot green"></span>
-                    <span class="terminal-title">emacboros@local: ~</span>
+                    <span class="terminal-title">i.ar@local: ~</span>
                 </div>
                 <div class="terminal-body">
-                    <p><span class="cmd-prompt">$</span> whatis emacboros</p>
+                    <p><span class="cmd-prompt">$</span> whatis i.ar</p>
                     <p class="terminal-output">
-                        emacboros is a containerized Emacs environment where AI agents
+                        i.ar &mdash; <strong>Inteligencia Avanzada Randazzo</strong> &mdash;
+                        is a containerized Emacs environment where AI agents
                         interact with a real filesystem, execute code, and delegate
                         tasks to specialized sub-agents &mdash; all running on local
                         hardware, with no cloud dependencies and no telemetry.
                     </p>
-                    <p><span class="cmd-prompt">$</span> emacboros --describe</p>
+                    <p><span class="cmd-prompt">$</span> i.ar --describe</p>
                     <p class="terminal-output">
                         The system pairs a local LLM backend (Ollama) with Emacs via
                         gptel, giving the model native tools: file I/O, shell execution,
@@ -90,7 +92,7 @@
                         operate inside a hardened Podman container with read-only mounts,
                         dropped capabilities, and a preflight security audit.
                     </p>
-                    <p><span class="cmd-prompt">$</span> emacboros --why</p>
+                    <p><span class="cmd-prompt">$</span> i.ar --why</p>
                     <p class="terminal-output">
                         Because AI tools that phone home are surveillance tools.
                         Because the editor is the operating system. Because a system
@@ -268,9 +270,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <span class="glitch-small" data-text="emacboros">emacboros</span>
+                    <span class="glitch-small" data-text="i.ar">i.ar</span>
                 </div>
                 <div class="footer-meta">
+                    <p>Inteligencia Avanzada Randazzo &middot; <a href="https://github.com/randazzo-ignacio/i.ar" target="_blank" rel="noopener">github.com/randazzo-ignacio/i.ar</a></p>
                     <p>Released under the <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener">GNU General Public License v3</a>.</p>
                     <p>Built by someone who believes everyone is relevant.</p>
                 </div>

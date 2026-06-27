@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════
-   emacboros — static landing page
+   i.ar — Inteligencia Avanzada Randazzo
+   Static landing page
    JavaScript: boot sequence, matrix rain, typewriter, scroll reveal
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -7,8 +8,8 @@
     'use strict';
 
     /* ── Boot Sequence ──────────────────────────────────────── */
-    const bootLines = [
-        '[ OK ] initializing emacboros v1.0',
+    var bootLines = [
+        '[ OK ] initializing i.ar v1.0',
         '[ OK ] mounting /root/.emacs.d (read-only)',
         '[ OK ] loading init.el',
         '[ OK ] gptel backend: ollama @ 10.66.0.3:11434',
@@ -24,14 +25,13 @@
         'system ready.'
     ];
 
-    const bootOverlay = document.getElementById('boot-overlay');
-    const bootText = document.getElementById('boot-text');
+    var bootOverlay = document.getElementById('boot-overlay');
+    var bootText = document.getElementById('boot-text');
 
     function runBootSequence() {
-        let lineIndex = 0;
-        let charIndex = 0;
-        let currentLine = '';
-        let fullText = '';
+        var lineIndex = 0;
+        var charIndex = 0;
+        var lines = []; // completed lines as strings
 
         function typeNext() {
             if (lineIndex >= bootLines.length) {
@@ -42,25 +42,28 @@
                         bootOverlay.style.display = 'none';
                         startMainAnimations();
                     }, 800);
-                }, 500);
+                }, 600);
                 return;
             }
 
-            currentLine = bootLines[lineIndex];
+            var currentLine = bootLines[lineIndex];
 
             if (charIndex <= currentLine.length) {
-                fullText += currentLine.substring(0, charIndex);
-                bootText.textContent = fullText;
+                // Build the display: completed lines + current line up to charIndex
+                var display = '';
+                for (var i = 0; i < lines.length; i++) {
+                    display += lines[i] + '\n';
+                }
+                display += currentLine.substring(0, charIndex);
+                bootText.textContent = display;
                 charIndex++;
-                fullText += '\n';
-                setTimeout(typeNext, 15);
+                setTimeout(typeNext, 12);
             } else {
-                fullText = fullText.replace(/\n$/, '');
-                fullText += '\n';
-                bootText.textContent = fullText;
+                // Line complete — store it and move on
+                lines.push(currentLine);
                 lineIndex++;
                 charIndex = 0;
-                setTimeout(typeNext, 80);
+                setTimeout(typeNext, 60);
             }
         }
 
@@ -69,19 +72,19 @@
 
     /* ── Matrix Rain ────────────────────────────────────────── */
     function initMatrixRain() {
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
+        var canvas = document.getElementById('matrix');
+        var ctx = canvas.getContext('2d');
 
-        let columns = [];
-        const fontSize = 14;
-        const chars = '01∞<>{}[]()=+-*/&|!?$#@%01ABCDEF0123456789';
+        var columns = [];
+        var fontSize = 14;
+        var chars = '01∞<>{}[]()=+-*/&|!?$#@%01ABCDEF0123456789';
 
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            const colCount = Math.floor(canvas.width / fontSize);
+            var colCount = Math.floor(canvas.width / fontSize);
             columns = [];
-            for (let i = 0; i < colCount; i++) {
+            for (var i = 0; i < colCount; i++) {
                 columns[i] = {
                     y: Math.random() * canvas.height,
                     speed: 0.5 + Math.random() * 1.5,
@@ -100,11 +103,11 @@
 
             ctx.font = fontSize + 'px monospace';
 
-            for (let i = 0; i < columns.length; i++) {
-                const col = columns[i];
-                const char = chars[Math.floor(Math.random() * chars.length)];
-                const x = i * fontSize;
-                const y = col.y;
+            for (var i = 0; i < columns.length; i++) {
+                var col = columns[i];
+                var char = chars[Math.floor(Math.random() * chars.length)];
+                var x = i * fontSize;
+                var y = col.y;
 
                 // Brighter head character
                 ctx.fillStyle = '#00ff41';
@@ -116,9 +119,9 @@
                 ctx.shadowBlur = 0;
                 ctx.fillStyle = 'rgba(0, 143, 36, 0.5)';
                 if (col.chars.length > 0) {
-                    for (let j = 0; j < col.chars.length && j < 5; j++) {
-                        const trailChar = col.chars[j];
-                        const trailY = y - (j + 1) * fontSize;
+                    for (var j = 0; j < col.chars.length && j < 5; j++) {
+                        var trailChar = col.chars[j];
+                        var trailY = y - (j + 1) * fontSize;
                         if (trailY > 0) {
                             ctx.fillText(trailChar, x, trailY);
                         }
@@ -139,7 +142,7 @@
         }
 
         // Throttle to ~20fps for performance
-        let lastDraw = 0;
+        var lastDraw = 0;
         function animate(timestamp) {
             if (timestamp - lastDraw > 50) {
                 draw();
@@ -153,16 +156,16 @@
 
     /* ── Typewriter Effect ──────────────────────────────────── */
     function initTypewriter() {
-        const el = document.getElementById('typewriter');
-        const text = 'A self-modifying AI operating environment.\nBuilt in Emacs. Hardened in Podman. Powered by local LLMs.';
+        var el = document.getElementById('typewriter');
+        var text = 'Inteligencia Avanzada Randazzo.\nA self-modifying AI operating environment.\nBuilt in Emacs. Hardened in Podman. Powered by local LLMs.';
 
-        let index = 0;
+        var index = 0;
 
         function type() {
             if (index <= text.length) {
                 el.textContent = text.substring(0, index);
                 index++;
-                setTimeout(type, 35);
+                setTimeout(type, 30);
             }
         }
 
@@ -171,8 +174,8 @@
 
     /* ── Scroll Reveal ──────────────────────────────────────── */
     function initScrollReveal() {
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver(function (entries) {
+        var reveals = document.querySelectorAll('.reveal');
+        var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -191,11 +194,11 @@
 
     /* ── Nav Scroll Effect ──────────────────────────────────── */
     function initNavScroll() {
-        const nav = document.getElementById('nav');
-        let lastScroll = 0;
+        var nav = document.getElementById('nav');
+        var lastScroll = 0;
 
         window.addEventListener('scroll', function () {
-            const scroll = window.scrollY;
+            var scroll = window.scrollY;
 
             if (scroll > 80) {
                 nav.style.padding = '10px 32px';
@@ -224,7 +227,7 @@
         bootOverlay.style.display = 'none';
         document.getElementById('matrix').style.display = 'none';
         document.getElementById('typewriter').textContent =
-            'A self-modifying AI operating environment. Built in Emacs. Hardened in Podman. Powered by local LLMs.';
+            'Inteligencia Avanzada Randazzo. A self-modifying AI operating environment. Built in Emacs. Hardened in Podman. Powered by local LLMs.';
         initScrollReveal();
         initNavScroll();
     } else {

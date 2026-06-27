@@ -1,7 +1,22 @@
 ---
 # roles/static-page/tasks/main.yml
-# Deploys the emacboros static landing page and serves it on the specified port.
-# Runs on: daftpunk (i.ar, 10.66.0.3) — served via Caddy reverse proxy on rammstein.
+# Deploys the emacboros static landing page to daftpunk (i.ar).
+# Caddy on daftpunk serves the files directly via file_server.
+# No separate HTTP server process needed — Caddy handles it.
+
+# ── Create www-data user ────────────────────────────────────
+- name: Create www-data user
+  user:
+    name: "{{ static_page_user }}"
+    system: true
+    create_home: false
+    shell: /sbin/nologin
+
+- name: Create www-data group (if it doesn't exist)
+  group:
+    name: "{{ static_page_group }}"
+    system: true
+    state: present
 
 # ── Create web root ──────────────────────────────────────────
 - name: Create web root directory
@@ -20,7 +35,6 @@
     owner: "{{ static_page_user }}"
     group: "{{ static_page_group }}"
     mode: '0644'
-  notify: restart static-page
 
 - name: Deploy style.css
   copy:
@@ -29,7 +43,6 @@
     owner: "{{ static_page_user }}"
     group: "{{ static_page_group }}"
     mode: '0644'
-  notify: restart static-page
 
 - name: Deploy script.js
   copy:
@@ -38,24 +51,3 @@
     owner: "{{ static_page_user }}"
     group: "{{ static_page_group }}"
     mode: '0644'
-  notify: restart static-page
-
-# ── Python HTTP server (lightweight, no extra deps) ──────────
-- name: Create static-page systemd service
-  template:
-    src: static-page.service.j2
-    dest: /etc/systemd/system/static-page.service
-    owner: root
-    group: root
-    mode: '0644'
-  notify: restart static-page
-
-- name: Reload systemd
-  systemd:
-    daemon_reload: true
-
-- name: Enable and start static-page
-  service:
-    name: static-page
-    state: started
-    enabled: true

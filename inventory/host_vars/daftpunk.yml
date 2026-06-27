@@ -8,6 +8,5 @@ ollama_models:
   - "qwen2.5-coder:14b"
 ollama_listen: "10.66.0.3"  # bind to WireGuard IP only
 
-# Static web page for the tool itself
+# Static web page — emacboros landing page served by Caddy file_server
 tool_static_page_enabled: true
-tool_static_port: 8080

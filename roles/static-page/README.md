@@ -1,8 +1,8 @@
 # static-page role
 
-Deploys the emacboros landing page to daftpunk (i.ar) and serves it on port 8080
-via a hardened systemd-managed Python HTTP server. Caddy on rammstein reverse-proxies
-`i.ar` to `10.66.0.3:8080` over the WireGuard mesh.
+Deploys the emacboros landing page to daftpunk (i.ar). Caddy on daftpunk
+serves the files directly via `file_server` — no separate HTTP server
+process needed.
 
 ## Files
 
@@ -11,35 +11,23 @@ via a hardened systemd-managed Python HTTP server. Caddy on rammstein reverse-pr
 | `files/index.html` | Landing page markup |
 | `files/style.css` | Matrix/terminal aesthetic stylesheet |
 | `files/script.js` | Boot sequence, matrix rain, scroll reveal |
-| `templates/static-page.service.j2` | Systemd unit for the HTTP server |
+| `tasks/main.yml` | Creates www-data user, web root, deploys files |
 
 ## Deployment
 
 The role is included in `playbooks/site.yml` and runs on `daftpunk` when
 `tool_static_page_enabled: true` (set in `host_vars/daftpunk.yml`).
 
-```bash
-# Deploy only the static page
-ansible-playbook playbooks/site.yml --vault-password-file .vault_pass --tags static-page
-```
-
-## Customization
-
-Edit `files/index.html`, `files/style.css`, and `files/script.js` directly,
-then re-run the playbook. The `notify: restart static-page` handler picks up
-changes automatically.
+Caddy runs on every cloud host but each host's Caddyfile only defines
+the domains that host actually serves. daftpunk's Caddyfile serves
+`i.ar` from `{{ static_page_root }}` via `file_server`.
 
 ## Architecture
 
 ```
-[Client] → HTTPS → [Caddy @ rammstein] → WireGuard → [Python HTTP @ daftpunk:8080]
-                   randazzo.ar:443                     10.66.0.3:8080
+[Client] → HTTPS → [Caddy @ daftpunk] → file_server → /var/www/emacboros/
+                   i.ar:443                             index.html, style.css, script.js
 ```
 
-The Python HTTP server runs under systemd with:
-- `NoNewPrivileges=true`
-- `ProtectSystem=strict`
-- `ProtectHome=true`
-- `PrivateTmp=true`
-- `ReadOnlyPaths` on the web root
-- Only `CAP_NET_BIND_SERVICE` capability
+Caddy handles TLS automatically via Let's Encrypt. No reverse proxy
+needed — static files are served directly from disk.

@@ -12,7 +12,7 @@
   roles:
     - wireguard
 
-- name: Cloud servers
+- name: Cloud servers — Caddy (per-host site config)
   hosts: cloud
   roles:
     - caddy
@@ -38,3 +38,4 @@
   roles:
     - role: static-page
       when: tool_static_page_enabled | default(false) | bool
+    - caddy

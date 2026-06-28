@@ -16,15 +16,6 @@ groups:
           summary: "Host {{ $labels.instance }} is down"
           description: "{{ $labels.instance }} has been unreachable for >2 minutes."
 
-      - alert: "ServiceDown"
-        expr: 'up{job!="node_exporters" and job!="prometheus"} == 0'
-        for: 2m
-        labels:
-          severity: "warning"
-        annotations:
-          summary: "Service {{ $labels.job }} on {{ $labels.instance }} is down"
-          description: "{{ $labels.job }} has been unreachable for >2 minutes."
-
   - name: "host_resources"
     rules:
       - alert: "HighCpuUsage"

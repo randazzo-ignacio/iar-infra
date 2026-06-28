@@ -38,13 +38,25 @@ camaras.{{ domains.proxy }} {
 
 {% elif inventory_hostname == 'daftpunk' %}
 # ═══════════════════════════════════════════════════════════
-# daftpunk — i.ar (emacboros landing page, static)
+# daftpunk — i.ar (emacboros landing page + grafana)
 # ═══════════════════════════════════════════════════════════
 
 # ── i.ar — emacboros landing page (local static) ───────────
 {{ domains.ollama }} {
     root * {{ static_page_root | default('/var/www/emacboros') }}
     file_server
+    encode gzip zstd
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy no-referrer
+    }
+}
+
+# ── grafana.i.ar — Grafana dashboards (reverse proxy) ──────
+grafana.{{ domains.ollama }} {
+    reverse_proxy 10.66.0.3:{{ grafana_port | default(3000) }}
     encode gzip zstd
     header {
         Strict-Transport-Security "max-age=31536000; includeSubDomains"

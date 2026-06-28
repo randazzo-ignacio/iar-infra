@@ -39,6 +39,8 @@ services:
       GF_USERS_ALLOW_SIGN_UP: "false"
       GF_SERVER_ROOT_URL: "https://grafana.i.ar"
       GF_SERVER_DOMAIN: "grafana.i.ar"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_AUTH_BASIC_ENABLED: "true"
     depends_on:
       - prometheus
     networks:
